@@ -35,14 +35,14 @@
         <jsp:useBean id="meal" type="ru.javawebinar.topjava.model.MealTo"/>
         <tr>
             <c:url var="updateButton" value="/mealUpdate">
-                <c:param name="empId" value="${meal.id}"/>
+                <c:param name="mealId" value="${meal.id}"/>
             </c:url>
             <c:url var="deleteButton" value="/mealDelete">
-                <c:param name="empId" value="${meal.id}"/>
+                <c:param name="mealId" value="${meal.id}"/>
             </c:url>
         <tr class="${meal.excess? 'excess':'norm'}">
             <th>
-                    <%=TimeUtil.toString(meal.getDateTime())%>
+                <%=TimeUtil.toString(meal.getDateTime())%>
                     ${fn:replace(meal.dateTime, 'T', ' ')}
             </th>
             <th>${meal.description}</th>
