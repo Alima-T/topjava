@@ -1,0 +1,33 @@
+
+.norm {
+    color: darkgreen
+}
+
+.excess {
+    color: darkred
+}
+
+.table_left {
+    float: left;
+    width: 50%;
+    border: 2px solid #242425; /* Рамка вокруг таблицы */
+    /*border-collapse: inherit; !* Убираем двойные линии между ячейками *!*/
+    text-align: left;
+    position: -ms-device-fixed;
+}
+
+td {
+    background-color: #f5f1f1;
+    border: 1px solid #7b7b7c;
+    padding: 3px; /* Поля вокруг содержимого ячейки */
+    height: 50px;
+    vertical-align: bottom;
+}
+
+th {
+    background-color: #f5f1f1;
+    border: 1px solid #7b7b7c;
+    padding: 3px; /* Поля вокруг содержимого ячейки */
+    height: 50px;
+    vertical-align: bottom;
+}
