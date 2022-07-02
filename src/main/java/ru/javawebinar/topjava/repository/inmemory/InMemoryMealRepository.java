@@ -5,6 +5,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.util.CollectionUtils;
 import ru.javawebinar.topjava.model.Meal;
 import ru.javawebinar.topjava.repository.MealRepository;
+import ru.javawebinar.topjava.util.DateTimeUtil;
 import ru.javawebinar.topjava.util.MealsUtil;
 
 import java.time.LocalDateTime;
@@ -60,7 +61,7 @@ public class InMemoryMealRepository implements MealRepository {
 
     @Override
     public List<Meal> getBetweenHalfOpen(LocalDateTime startDateTime, LocalDateTime endDateTime, int userId) {
-        return getAllFiltered(userId, meal -> isBetweenHalfOpen(meal.getDateTime(), startDateTime, endDateTime));
+        return getAllFiltered(userId, meal -> DateTimeUtil.isBetweenHalfOpen(meal.getDateTime(), startDateTime, endDateTime));
     }
     @Override
     public List<Meal> getAll(int userId) {
@@ -73,8 +74,5 @@ public class InMemoryMealRepository implements MealRepository {
                 meals.values().stream()
                 .sorted(Comparator.comparing(Meal::getDateTime).reversed()) //DateTime implements Comparable
                 .collect(Collectors.toList());
-    }
-    public static <T extends Comparable<T>> boolean isBetweenHalfOpen(T value, @Nullable T start, @Nullable T end) {
-        return (start == null || value.compareTo(start) >= 0) && (end == null || value.compareTo(end) < 0);
     }
 }

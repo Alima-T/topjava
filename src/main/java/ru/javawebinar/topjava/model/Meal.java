@@ -5,7 +5,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 public class Meal extends AbstractBaseEntity{
-    private Integer id;
+//    private Integer id; //удаляем id, геттер и сеттер, иначе он задублируется, т.к. уже есть в родителе
 
     private final LocalDateTime dateTime;
 

@@ -1,6 +1,9 @@
 package ru.javawebinar.topjava.to;
 
 import java.time.LocalDateTime;
+//TO (DTO)- (Data) Transfer Object это объект, который содержит только данные и служит для передачи их между слоями,
+// т.е. мы добавляем наши entity в DTO и направляем на Ui (в данном проекте, дополняя полем excess)
+//Если проект небольшой, можно не использовать DTO, а возвращать доменные модели
 
 public class MealTo {
     private final Integer id;
