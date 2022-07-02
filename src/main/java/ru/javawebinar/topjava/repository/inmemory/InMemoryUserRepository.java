@@ -12,35 +12,37 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.stream.Collectors;
 
 @Repository
 public class InMemoryUserRepository implements UserRepository {
     private static final Logger log = LoggerFactory.getLogger(InMemoryUserRepository.class);
 
-    private final Map<Integer,User> userRepository = new ConcurrentHashMap<>();
+    private final Map<Integer, User> userRepository = new ConcurrentHashMap<>();
     private final AtomicInteger counter = new AtomicInteger(0);
+
+    public static final int USER_ID = 1;
+    public static final int ADMIN_ID = 2;
 
 
     @Override
     public User save(User user) {
 
-        if(user.isNew()){
+        if (user.isNew()) {
             user.setId(counter.incrementAndGet());
             userRepository.put(user.getId(), user);
             return user;
         }
-        return userRepository.computeIfPresent(user.getId(),(id,oldUser)->user);
+        return userRepository.computeIfPresent(user.getId(), (id, oldUser) -> user); // вместо put берем computeIfPresent, позволяет не добавлять юзера, если он уже удалился или если пришел с id, который отсутствует в map, то он не будет добавляться
     }
 
     @Override
     public boolean delete(int id) {
-        return userRepository.remove(id)!=null;
+        return userRepository.remove(id) != null;
     }
 
     @Override
     public User get(int id) {
-      return userRepository.get(id);
+        return userRepository.get(id);
     }
 
     @Override
@@ -52,6 +54,7 @@ public class InMemoryUserRepository implements UserRepository {
         list.sort(Comparator.comparing((User user1) -> user1.getName()).thenComparing(user -> user.getEmail()));
         return list;
     }
+    //В java 8, появился который позволяет вызывать функцию, которая должна возвращать класс String который реализует Comparable. Т.к. имя неуникально, то добавляем доп сроавнение по уникальному признаку email)
 
 //    Short
 //    @Override
@@ -66,8 +69,8 @@ public class InMemoryUserRepository implements UserRepository {
     public User getByEmail(String email) {
         return userRepository.values()
                 .stream()
-                .filter(u->email.equals(u.getEmail()))
-                .findFirst()
+                .filter(u -> email.equals(u.getEmail()))
+                .findFirst() //returns Optional, a container object which may or may not contain a non-null value, можем фильтровать, давать ему map и не бояться получить NullPointerException
                 .orElse(null);
     }
 }
