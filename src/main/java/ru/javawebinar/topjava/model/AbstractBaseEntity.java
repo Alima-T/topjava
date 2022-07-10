@@ -1,5 +1,6 @@
 package ru.javawebinar.topjava.model;
 
+
 import org.springframework.util.Assert;
 
 import javax.persistence.*;
