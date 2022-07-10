@@ -48,20 +48,20 @@ private  MealService mealService;
         Integer newID = created.getId();
         Meal newMeal = getNew();
         newMeal.setId(newID);
-        assertMatch(created,newMeal);
-        assertMatch(mealService.get(newID, USER_ID), newMeal);
+        MEAL_MATCHER.assertMatch(created,newMeal);
+        MEAL_MATCHER.assertMatch(mealService.get(newID, USER_ID), newMeal);
     }
 
     @Test
     public void get() {
      Meal actual = mealService.get(MEAL1_ID, USER_ID);
-     assertMatch(actual, meal1);
+     MEAL_MATCHER.assertMatch(actual, meal1);
     }
 
     @Test
     public void getAdminMeal() {
         Meal actual= mealService.get(ADMIN_MEAL_ID, ADMIN_ID);
-        assertMatch(actual, adminMeal1);
+        MEAL_MATCHER.assertMatch(actual, adminMeal1);
     }
 
     @Test

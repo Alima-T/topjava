@@ -10,6 +10,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.SqlConfig;
 import org.springframework.test.context.junit4.SpringRunner;
+import ru.javawebinar.topjava.MatcherFactory;
 import ru.javawebinar.topjava.UserTestData;
 import ru.javawebinar.topjava.model.Role;
 import ru.javawebinar.topjava.model.User;
@@ -18,6 +19,7 @@ import ru.javawebinar.topjava.util.exception.NotFoundException;
 import java.util.List;
 
 import static org.junit.Assert.assertThrows;
+import static ru.javawebinar.topjava.MealTestData.MEAL_MATCHER;
 import static ru.javawebinar.topjava.UserTestData.*;
 
 
@@ -49,8 +51,8 @@ public class UserServiceTest {
         Integer newId = created.getId();
         User newUser = getNew();
         newUser.setId(newId);
-        assertMatch(created, newUser);
-        assertMatch(userService.get(newId), newUser);
+        USER_MATCHER.assertMatch(created, newUser);
+        USER_MATCHER.assertMatch(userService.get(newId), newUser);
     }
 
     @Test
@@ -89,25 +91,25 @@ public class UserServiceTest {
     @Test
     public void get() {
         User user = userService.get(USER_ID);
-        assertMatch(user, UserTestData.user);
+        USER_MATCHER.assertMatch(user, UserTestData.user);
     }
 
     @Test
     public void getByEmail() {
         User user = userService.getByEmail("guest@yandex.ru");
-        assertMatch(user, guest);
+        USER_MATCHER.assertMatch(user, guest);
     }
 
     @Test
     public void update() {
         User updated = getUpdated();
         userService.update(updated);
-        assertMatch(userService.get(USER_ID), getUpdated());
+        USER_MATCHER.assertMatch(userService.get(USER_ID), getUpdated());
     }
 
     @Test
     public void getAll() {
         List<User> all = userService.getAll();
-        assertMatch(all, admin, guest, user);
+        USER_MATCHER.assertMatch(all, admin, guest, user);
     }
 }
