@@ -10,6 +10,7 @@
         <constructor-arg name="repository" ref="inmemoryUserRepository"/>
     </bean>
 -->
+<!--    <context:component-scan base-package="ru.javawebinar.**.repository"/> добавляем .jdbc, иначе при запуске теста Spring находит 2 реализации UserRepository (InMemoryUserRepository & JdbcUserRepository)  и не может выполнить тест-->
     <context:component-scan base-package="ru.javawebinar.**.repository.jdbc"/>
 
     <context:component-scan base-package="ru.javawebinar.**.service"/>

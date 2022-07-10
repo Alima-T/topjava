@@ -22,10 +22,17 @@ public class User extends AbstractNamedEntity {
 
     public User() {
     }
-
+//    @Override
+//    protected Object clone() throws CloneNotSupportedException {
+//        return super.clone();
+//    }
+    //Вместо Object clone, который бросает исключение (неудобно)
+    // используем конструктор копирования, когда на вход даем один инстанс, а на выходе выдаем его копию,
+    // что требует дефолтный конструктор в данном и во всех базовых классах
     public User(User u) {
         this(u.id, u.name, u.email, u.password, u.caloriesPerDay, u.enabled, u.registered, u.roles);
     }
+
 
     public User(Integer id, String name, String email, String password, Role... roles) {
         this(id, name, email, password, DEFAULT_CALORIES_PER_DAY, true, new Date(), Arrays.asList((roles)));

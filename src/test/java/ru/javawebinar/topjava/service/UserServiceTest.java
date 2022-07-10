@@ -1,6 +1,7 @@
 package ru.javawebinar.topjava.service;
 
 import org.junit.Test;
+import org.junit.function.ThrowingRunnable;
 import org.junit.runner.RunWith;
 import org.slf4j.bridge.SLF4JBridgeHandler;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,11 @@ import java.util.List;
 import static org.junit.Assert.assertThrows;
 import static ru.javawebinar.topjava.UserTestData.*;
 
+
+/**
+ * @Alima-T 7/9/2022
+ */
+
 @ContextConfiguration({
         "classpath:spring/spring-app.xml",
         "classpath:spring/spring-db.xml"
@@ -34,62 +40,74 @@ public class UserServiceTest {
     }
 
     @Autowired
-    private UserService service;
+    private UserService userService;
+
 
     @Test
     public void create() {
-        User created = service.create(getNew());
+        User created = userService.create(getNew());
         Integer newId = created.getId();
         User newUser = getNew();
         newUser.setId(newId);
         assertMatch(created, newUser);
-        assertMatch(service.get(newId), newUser);
+        assertMatch(userService.get(newId), newUser);
     }
 
     @Test
     public void duplicateMailCreate() {
-        assertThrows(DataAccessException.class, () ->
-                service.create(new User(null, "Duplicate", "user@yandex.ru", "newPass", Role.USER)));
+        assertThrows(DataAccessException.class, new ThrowingRunnable() {
+            @Override
+            public void run() throws Throwable {
+                userService.create(new User(null, "Duplicate", "user@yandex.ru", "newPass", Role.USER));
+            }
+        });
     }
+
 
     @Test
     public void delete() {
-        service.delete(USER_ID);
-        assertThrows(NotFoundException.class, () -> service.get(USER_ID));
+        userService.delete(USER_ID);
+        assertThrows(NotFoundException.class,
+                new ThrowingRunnable() {
+                    @Override
+                    public void run() throws Throwable {
+                        userService.get(USER_ID);
+                    }
+                });
     }
 
     @Test
     public void deletedNotFound() {
-        assertThrows(NotFoundException.class, () -> service.delete(NOT_FOUND));
-    }
-
-    @Test
-    public void get() {
-        User user = service.get(USER_ID);
-        assertMatch(user, UserTestData.user);
+        assertThrows(NotFoundException.class, () -> userService.delete(NOT_FOUND));
     }
 
     @Test
     public void getNotFound() {
-        assertThrows(NotFoundException.class, () -> service.get(NOT_FOUND));
+        assertThrows(NotFoundException.class, () -> userService.get(NOT_FOUND));
+    }
+
+    @Test
+    public void get() {
+        User user = userService.get(USER_ID);
+        assertMatch(user, UserTestData.user);
     }
 
     @Test
     public void getByEmail() {
-        User user = service.getByEmail("admin@gmail.com");
-        assertMatch(user, admin);
+        User user = userService.getByEmail("guest@yandex.ru");
+        assertMatch(user, guest);
     }
 
     @Test
     public void update() {
         User updated = getUpdated();
-        service.update(updated);
-        assertMatch(service.get(USER_ID), getUpdated());
+        userService.update(updated);
+        assertMatch(userService.get(USER_ID), getUpdated());
     }
 
     @Test
     public void getAll() {
-        List<User> all = service.getAll();
+        List<User> all = userService.getAll();
         assertMatch(all, admin, guest, user);
     }
 }

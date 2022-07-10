@@ -20,28 +20,27 @@ public class MealService {
     public MealService(MealRepository repository) {
         this.repository = repository;
     }
-
-    public Meal get(int id, int userId) {
-        return checkNotFoundWithId(repository.get(id, userId), id);
-    }
-
-    public void delete(int id, int userId) {
-        checkNotFoundWithId(repository.delete(id, userId), id);
-    }
-
-    public List<Meal> getBetweenInclusive(@Nullable LocalDate startDate, @Nullable LocalDate endDate, int userId) {
-        return repository.getBetweenHalfOpen(atStartOfDayOrMin(startDate), atStartOfNextDayOrMax(endDate), userId);
-    }
-
-    public List<Meal> getAll(int userId) {
-        return repository.getAll(userId);
-    }
-
-    public void update(Meal meal, int userId) {
-        checkNotFoundWithId(repository.save(meal, userId), meal.getId());
-    }
-
     public Meal create(Meal meal, int userId) {
         return repository.save(meal, userId);
     }
+
+        public Meal get ( int id, int userId){
+            return checkNotFoundWithId(repository.get(id, userId), id);
+        }
+
+        public void delete ( int id, int userId){
+            checkNotFoundWithId(repository.delete(id, userId), id);
+        }
+
+        public List<Meal> getBetweenInclusive (@Nullable LocalDate startDate, @Nullable LocalDate endDate,int userId){
+            return repository.getBetweenHalfOpen(atStartOfDayOrMin(startDate), atStartOfNextDayOrMax(endDate), userId);
+        }
+
+        public List<Meal> getAll ( int userId){
+            return repository.getAll(userId);
+        }
+
+        public void update (Meal meal,int userId){
+            checkNotFoundWithId(repository.save(meal, userId), meal.getId());
+        }
 }
